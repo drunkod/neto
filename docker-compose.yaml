@@ -1,15 +1,23 @@
 version: "3.4"
 services:
   neko:
-    image: "m1k1o/neko:firefox"
+    image: "m1k1o/neko:chromium"
     restart: "unless-stopped"
     shm_size: "2gb"
     ports:
       - "8080:8080"
       - "52000-52100:52000-52100/udp"
+      - "52100:52100"
     environment:
-      NEKO_SCREEN: 1920x1080@30
+      NEKO_SCREEN: 1280x720@30
       NEKO_PASSWORD: neko
       NEKO_PASSWORD_ADMIN: admin
       NEKO_EPR: 52000-52100
+      # NEKO_UDPMUX: 52100 
       NEKO_ICELITE: 1
+      NEKO_NAT1TO1: 100.84.138.10
+      # NEKO_BROADCAST_PIPELINE: flvmux name=mux ! rtmpsink location="{url} live=1" pulsesrc device={device} ! audio/x-raw,channels=2 ! audioconvert ! voaacenc ! mux. ximagesrc display-name={display} show-pointer=true use-damage=false ! video/x-raw,framerate=25/1 ! videoconvert ! queue ! x264enc bframes=0 key-int-max=60 byte-stream=true tune=zerolatency speed-preset=veryfast ! mux.
+      # NEKO_TCPMUX: 52100
+      #
+    cap_add:
+      - SYS_ADMIN
